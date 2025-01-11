@@ -33,8 +33,13 @@ async def on_error(event, *args, **kwargs):
     print(f"Error occurred: {error}")
 
 _OVERWRITE_PERM = {
+    'priority_speaker': True,   # 有線スピーカー
+    'manage_messages': True,    # メッセージの管理
     'connect': True,  # チャンネルへの接続を許可
     'speak': True,  # 音声の送信を許可
+    'mute_members': True,   # メンバーのミュート
+    'deafen_members': True, # メンバーのディスコードミュート
+    'move_members': True,   # メンバーの移動
     'use_voice_activation': True,  # 音声アクティビティの使用を許可
     'manage_channels': True,  # チャンネルの管理を許可
 }
