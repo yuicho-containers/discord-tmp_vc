@@ -69,7 +69,12 @@ async def on_voice_state_update(member, before, after):
                     'name': f'{member.name}\'s {env.VC_NAME}',
                     'category': after.channel.category,
                 }
-                new_channel = await member.guild.create_voice_channel(**args)
+
+                if env.VC_TYPE == 'normal':
+                    new_channel = await member.guild.create_voice_channel(**args)
+                if env.VC_TYPE == 'stage':
+                    new_channel = await member.guild.create_stage_channel(**args)
+
                 _created_vc.append(new_channel)
 
                 overwrites = dict()
