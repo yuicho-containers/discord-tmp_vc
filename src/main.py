@@ -61,7 +61,7 @@ async def on_voice_state_update(member, before, after):
                 _logger.info(f'Join {member.name}({member.id}) to generator channel')
 
                 args = {
-                    'name': f'{member.name}\'s {env.VC_NAME} VC',
+                    'name': f'{member.name}\'s {env.VC_NAME}',
                     'category': after.channel.category,
                 }
                 new_channel = await member.guild.create_voice_channel(**args)
