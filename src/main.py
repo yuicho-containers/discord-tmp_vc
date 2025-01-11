@@ -32,7 +32,7 @@ async def on_error(event, *args, **kwargs):
     error = traceback.format_exc()
     print(f"Error occurred: {error}")
 
-_OVERRIGHT_PERM = {
+_OVERWRITE_PERM = {
     'connect': True,  # チャンネルへの接続を許可
     'speak': True,  # 音声の送信を許可
     'use_voice_activation': True,  # 音声アクティビティの使用を許可
@@ -70,7 +70,7 @@ async def on_voice_state_update(member, before, after):
                 overwrites = dict()
                 for overwrites_role, perm in after.channel.overwrites.items():
                     overwrites[overwrites_role] = perm
-                overwrites[member] = discord.PermissionOverwrite(**_OVERRIGHT_PERM)
+                overwrites[member] = discord.PermissionOverwrite(**_OVERWRITE_PERM)
                 await new_channel.edit(overwrites=overwrites)
 
                 _logger.info(f'Created "{new_channel.name}"')
