@@ -32,9 +32,14 @@ async def on_error(event, *args, **kwargs):
     error = traceback.format_exc()
     print(f"Error occurred: {error}")
 
-_OVERRIGHT_PERM = {
+_OVERWRITE_PERM = {
+    'priority_speaker': True,   # 有線スピーカー
+    'manage_messages': True,    # メッセージの管理
     'connect': True,  # チャンネルへの接続を許可
     'speak': True,  # 音声の送信を許可
+    'mute_members': True,   # メンバーのミュート
+    'deafen_members': True, # メンバーのディスコードミュート
+    'move_members': True,   # メンバーの移動
     'use_voice_activation': True,  # 音声アクティビティの使用を許可
     'manage_channels': True,  # チャンネルの管理を許可
 }
@@ -61,16 +66,21 @@ async def on_voice_state_update(member, before, after):
                 _logger.info(f'Join {member.name}({member.id}) to generator channel')
 
                 args = {
-                    'name': f'{member.name}\'s {env.VC_NAME} VC',
+                    'name': f'{member.name}\'s {env.VC_NAME}',
                     'category': after.channel.category,
                 }
-                new_channel = await member.guild.create_voice_channel(**args)
+
+                if env.VC_TYPE == 'normal':
+                    new_channel = await member.guild.create_voice_channel(**args)
+                if env.VC_TYPE == 'stage':
+                    new_channel = await member.guild.create_stage_channel(**args)
+
                 _created_vc.append(new_channel)
 
                 overwrites = dict()
                 for overwrites_role, perm in after.channel.overwrites.items():
                     overwrites[overwrites_role] = perm
-                overwrites[member] = discord.PermissionOverwrite(**_OVERRIGHT_PERM)
+                overwrites[member] = discord.PermissionOverwrite(**_OVERWRITE_PERM)
                 await new_channel.edit(overwrites=overwrites)
 
                 _logger.info(f'Created "{new_channel.name}"')
